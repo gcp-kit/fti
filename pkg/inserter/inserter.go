@@ -15,11 +15,14 @@ import (
 
 type Inserter struct {
 	jsonInserter *JSONInserter
+	jsInserter   *JSInserter
 }
 
 func NewInserter(client *firestore.Client) *Inserter {
+	ci := NewCommonInserter(client)
 	return &Inserter{
-		jsonInserter: NewJSONInserter(client),
+		jsonInserter: NewJSONInserter(ci),
+		jsInserter:   NewJSInserter(ci),
 	}
 }
 
@@ -50,12 +53,15 @@ func (i *Inserter) executeFile(ctx context.Context) func(path string, info os.Fi
 		var err error
 		switch {
 		case strings.HasSuffix(path, ".json"):
-			err = i.jsonInserter.executeJSON(ctx, cn, path)
+			err = i.jsonInserter.Execute(ctx, cn, path)
 			if err != nil {
 				log.Printf("failed to insert json file: %s\n%+v", path, err)
 			}
 		case strings.HasSuffix(path, ".js"):
-			// TODO: implements here for js api
+			err = i.jsInserter.Execute(ctx, cn, path)
+			if err != nil {
+				log.Printf("failed to insert js file: %s\n%+v", path, err)
+			}
 		}
 
 		return nil
