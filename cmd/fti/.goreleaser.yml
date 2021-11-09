@@ -10,7 +10,7 @@ builds:
       - -s -w
       - -X github.com/go-generalize/fti/common.AppVersion={{.Version}}
     env:
-      - CGO_ENABLED=0
+      - CGO_ENABLED=1
     goos:
       - linux
       - darwin
