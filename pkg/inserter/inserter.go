@@ -23,6 +23,7 @@ type Inserter struct {
 func NewInserter(client *firestore.Client) *Inserter {
 	return &Inserter{
 		client: client,
+		refIDs: map[string]string{},
 	}
 }
 
@@ -83,13 +84,13 @@ func (i *Inserter) executeJSON(ctx context.Context, cn, path string) error {
 			if !ok {
 				continue
 			}
-			err := i.createItem(ctx, cn, mp)
+			err := i.createItem(ctx, cn, jm.Ref, mp)
 			if err != nil {
 				return xerrors.Errorf("failed to create item in array (index=%d): %w", idx, err)
 			}
 		}
 	} else if payload, ok := jm.Payload.(map[string]interface{}); ok {
-		err := i.createItem(ctx, cn, payload)
+		err := i.createItem(ctx, cn, jm.Ref, payload)
 		if err != nil {
 			return xerrors.Errorf("failed to create item: %w", err)
 		}
@@ -100,14 +101,23 @@ func (i *Inserter) executeJSON(ctx context.Context, cn, path string) error {
 	return nil
 }
 
-func (i *Inserter) createItem(ctx context.Context, cn string, item map[string]interface{}) error {
+func (i *Inserter) createItem(ctx context.Context, cn, refID string, item map[string]interface{}) error {
 	item = i.tryParseDate(item)
+	item = i.setRefs(item)
 
-	log.Printf("collection: %s, item: %+v", cn, item)
-	_, err := i.client.Collection(cn).NewDoc().Create(ctx, item)
+	d := i.client.Collection(cn).NewDoc()
+	_, err := d.Create(ctx, item)
 	if err != nil {
 		return xerrors.Errorf("failed to create item: %w", err)
 	}
+
+	if refID != "" {
+		if _, ok := i.refIDs[refID]; ok {
+			return xerrors.Errorf("already ref id: %s", refID)
+		}
+		i.refIDs[refID] = d.ID
+	}
+
 	return nil
 }
 
@@ -128,4 +138,24 @@ func (i *Inserter) tryParseDate(item map[string]interface{}) map[string]interfac
 	}
 
 	return item
+}
+
+func (i *Inserter) setRefs(item map[string]interface{}) map[string]interface{} {
+	for k, v := range item {
+		switch vt := v.(type) {
+		case string:
+			if strings.HasPrefix(vt, "$") {
+				refID := strings.TrimPrefix(vt, "$")
+				rv, ok := i.refIDs[refID]
+				if !ok {
+					log.Printf("%s was not found", refID)
+					continue
+				}
+				item[k] = rv
+			}
+		}
+	}
+
+	return item
+
 }
