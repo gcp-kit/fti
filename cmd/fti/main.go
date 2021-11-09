@@ -3,12 +3,14 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"path/filepath"
 	"time"
 
 	"cloud.google.com/go/firestore"
 	_ "github.com/BurntSushi/toml"
+	"github.com/go-generalize/fti/common"
 	"github.com/go-generalize/fti/pkg/config"
 	"github.com/go-generalize/fti/pkg/files"
 	"github.com/go-generalize/fti/pkg/inserter"
@@ -21,11 +23,17 @@ import (
 )
 
 var (
-	configPath = flag.String("c", "config.yaml", "-c config.yaml")
+	configPath  = flag.String("c", "config.yaml", "-c config.yaml")
+	versionFlag = flag.Bool("v", false, "show version")
 )
 
 func main() {
 	flag.Parse()
+
+	if *versionFlag {
+		fmt.Println(common.AppVersion)
+		return
+	}
 
 	if !files.Exists(*configPath) {
 		configFullPath, _ := filepath.Abs(*configPath)
