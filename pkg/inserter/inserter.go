@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"cloud.google.com/go/firestore"
-	"github.com/go-generalize/fti/pkg/config"
-	"github.com/go-generalize/fti/pkg/files"
+	"github.com/gcp-kit/fti/pkg/config"
+	"github.com/gcp-kit/fti/pkg/files"
 	"golang.org/x/xerrors"
 )
 
