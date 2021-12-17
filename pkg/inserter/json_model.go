@@ -6,6 +6,7 @@ type JsonModel struct {
 }
 
 type JsonModelItem struct {
-	Ref     string                 `json:"ref"`
-	Payload map[string]interface{} `json:"payload"`
+	Ref           string                     `json:"ref"`
+	Payload       map[string]interface{}     `json:"payload"`
+	SubCollection map[string][]JsonModelItem `json:"sub_collections"`
 }
