@@ -3,7 +3,10 @@ package inserter
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
+	"strconv"
+	"strings"
 
 	"golang.org/x/xerrors"
 	v8 "rogchap.com/v8go"
@@ -54,10 +57,33 @@ func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to unmarshal json: %w", err)
 	}
 
-	for idx, item := range jms {
-		err = j.ci.CreateItem(ctx, cn, item.Ref, item.Payload)
+	err = j.CreateItem(ctx, cn, jms, []int{})
+	if err != nil {
+		return xerrors.Errorf("failed to create item: %w", err)
+	}
+
+	return nil
+}
+
+func (j *JSInserter) CreateItem(ctx context.Context, cn string, items []JsonModelItem, collectionIndexes []int) error {
+	for idx, parentItem := range items {
+		nowIndexes := append(collectionIndexes, idx)
+		err := j.ci.CreateItem(ctx, cn, parentItem.Ref, parentItem.Payload)
 		if err != nil {
-			return xerrors.Errorf("failed to create item (index: %d): %w", idx, err)
+			errorIndexes := []string{}
+			for _, v := range nowIndexes {
+				errorIndexes = append(errorIndexes, strconv.Itoa(v))
+			}
+			return xerrors.Errorf("failed to create item in array (index=%s): %w", strings.Join(errorIndexes, "/"), err)
+		}
+		if len(parentItem.SubCollection) == 0 {
+			continue
+		}
+		for collectionName, subItems := range parentItem.SubCollection {
+			err := j.CreateItem(ctx, fmt.Sprintf("%s/%s/%s", cn, j.ci.refIDs[parentItem.Ref], collectionName), subItems, nowIndexes)
+			if err != nil {
+				return xerrors.Errorf("failed to create item in array: %w", err)
+			}
 		}
 	}
 
