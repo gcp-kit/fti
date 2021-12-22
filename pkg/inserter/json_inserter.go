@@ -52,10 +52,10 @@ func (j *JSONInserter) CreateItem(ctx context.Context, cn string, items []JsonMo
 			}
 			return xerrors.Errorf("failed to create item in array (index=%s): %w", strings.Join(errorIndexes, "/"), err)
 		}
-		if len(parentItem.SubCollection) == 0 {
+		if len(parentItem.SubCollections) == 0 {
 			continue
 		}
-		for collectionName, subItems := range parentItem.SubCollection {
+		for collectionName, subItems := range parentItem.SubCollections {
 			err := j.CreateItem(ctx, fmt.Sprintf("%s/%s/%s", cn, j.ci.refIDs[parentItem.Ref], collectionName), subItems, nowIndexes)
 			if err != nil {
 				return xerrors.Errorf("failed to create item in array: %w", err)
