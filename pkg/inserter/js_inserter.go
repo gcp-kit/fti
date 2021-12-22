@@ -57,7 +57,7 @@ func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to unmarshal json: %w", err)
 	}
 
-	err = j.CreateItem(ctx, cn, jms, []int{})
+	err = j.CreateItem(ctx, cn, jms, make([]int, 0))
 	if err != nil {
 		return xerrors.Errorf("failed to create item: %w", err)
 	}
@@ -70,7 +70,7 @@ func (j *JSInserter) CreateItem(ctx context.Context, cn string, items []JsonMode
 		nowIndexes := append(collectionIndexes, idx)
 		err := j.ci.CreateItem(ctx, cn, parentItem.Ref, parentItem.Payload)
 		if err != nil {
-			errorIndexes := []string{}
+			errorIndexes := make([]string, 0)
 			for _, v := range nowIndexes {
 				errorIndexes = append(errorIndexes, strconv.Itoa(v))
 			}
