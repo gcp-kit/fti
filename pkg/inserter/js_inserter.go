@@ -3,7 +3,6 @@ package inserter
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -57,7 +56,8 @@ func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to unmarshal json: %w", err)
 	}
 
-	err = j.CreateItem(ctx, cn, jms, make([]int, 0))
+	docPath := make([]string, 0)
+	err = j.CreateItem(ctx, append(docPath, cn), jms, make([]int, 0))
 	if err != nil {
 		return xerrors.Errorf("failed to create item: %w", err)
 	}
@@ -65,10 +65,11 @@ func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 	return nil
 }
 
-func (j *JSInserter) CreateItem(ctx context.Context, cn string, items []JsonModelItem, collectionIndexes []int) error {
+func (j *JSInserter) CreateItem(ctx context.Context, path []string, items []JsonModelItem, collectionIndexes []int) error {
 	for idx, parentItem := range items {
 		nowIndexes := append(collectionIndexes, idx)
-		err := j.ci.CreateItem(ctx, cn, parentItem.Ref, parentItem.Payload)
+		docPath := strings.Join(path, "/")
+		err := j.ci.CreateItem(ctx, docPath, parentItem.Ref, parentItem.Payload)
 		if err != nil {
 			errorIndexes := make([]string, 0)
 			for _, v := range nowIndexes {
@@ -80,7 +81,7 @@ func (j *JSInserter) CreateItem(ctx context.Context, cn string, items []JsonMode
 			continue
 		}
 		for collectionName, subItems := range parentItem.SubCollections {
-			err := j.CreateItem(ctx, fmt.Sprintf("%s/%s/%s", cn, j.ci.refIDs[parentItem.Ref], collectionName), subItems, nowIndexes)
+			err := j.CreateItem(ctx, append(path, j.ci.refIDs[parentItem.Ref], collectionName), subItems, nowIndexes)
 			if err != nil {
 				return xerrors.Errorf("failed to create item in array: %w", err)
 			}
