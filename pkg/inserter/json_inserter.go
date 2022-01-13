@@ -24,7 +24,7 @@ func (j *JSONInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to read json file: %+v", err)
 	}
 
-	jm := new(JsonModel)
+	jm := new(Model)
 	err = json.Unmarshal(jb, jm)
 	if err != nil {
 		return xerrors.Errorf("failed to unmarshal json: %w", err)
