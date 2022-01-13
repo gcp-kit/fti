@@ -14,7 +14,7 @@ jobs:
         working-directory: /tmp
         run: |
           go get golang.org/x/tools/cmd/goimports
-      - Install JRE
+      - name: Install JRE
         run: |
           apt install openjdk-17-jre
       - name: Run emulator
