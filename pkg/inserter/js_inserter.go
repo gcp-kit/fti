@@ -48,7 +48,7 @@ func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to marshal json of returned value: %w", err)
 	}
 
-	jms := make([]JsonModelItem, 0)
+	jms := make([]ModelItem, 0)
 	err = json.Unmarshal(jb, &jms)
 	if err != nil {
 		return xerrors.Errorf("failed to unmarshal json: %w", err)
