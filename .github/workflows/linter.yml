@@ -16,7 +16,7 @@ jobs:
           go get golang.org/x/tools/cmd/goimports
       - name: Install JRE
         run: |
-          apt install openjdk-17-jre
+          sudo apt update && sudo apt install openjdk-17-jre
       - name: Run emulator
         run: |
           make emulator &
