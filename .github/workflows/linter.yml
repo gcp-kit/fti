@@ -17,6 +17,9 @@ jobs:
       - name: Install JRE
         run: |
           sudo apt update && sudo apt install openjdk-17-jre
+      - name: Install emulator
+        run: |
+          npm ci
       - name: Run emulator
         run: |
           make emulator &
