@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/gcp-kit/fti#readme",
   "devDependencies": {
-    "firebase": "^9.6.2"
+    "firebase-tools": "^10.1.0"
   }
 }
