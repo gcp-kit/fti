@@ -1,0 +1,22 @@
+{
+  "name": "fti",
+  "version": "1.0.0",
+  "description": "Firestore testdata inserter.",
+  "main": "index.js",
+  "scripts": {
+    "emulator": "firebase emulators:start --only firestore"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gcp-kit/fti.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gcp-kit/fti/issues"
+  },
+  "homepage": "https://github.com/gcp-kit/fti#readme",
+  "devDependencies": {
+    "firebase": "^9.6.2"
+  }
+}
