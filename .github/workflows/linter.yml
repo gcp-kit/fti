@@ -15,9 +15,11 @@ jobs:
         run: |
           go get golang.org/x/tools/cmd/goimports
       - Install JRE
-        run: apt install openjdk-17-jre
+        run: |
+          apt install openjdk-17-jre
       - name: Run emulator
-        run: make emulator &
+        run: |
+          make emulator &
       - name: Ensure samples are generated
         env:
           TZ: Asia/Tokyo
