@@ -4,8 +4,8 @@ import (
 	"context"
 	"os"
 
+	"github.com/goccy/go-yaml"
 	"golang.org/x/xerrors"
-	"gopkg.in/yaml.v2"
 )
 
 // YAMLInserter - InserterのYAML実装
