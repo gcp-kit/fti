@@ -41,3 +41,4 @@ jobs:
         with:
           args: "--config=.github/.golangci.yml"
           skip-go-installation: true
+          args: '--out-format line-number'
