@@ -73,10 +73,7 @@ issues:
 
 run:
   skip-dirs:
-    - test/testdata_etc
-    - internal/cache
-    - internal/renameio
-    - internal/robustio
+    - node_modules
 
 service:
   golangci-lint-version: 1.43.x

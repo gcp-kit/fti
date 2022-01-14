@@ -39,5 +39,5 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
         with:
-          args: "--config=.github/.golangci.yml -v"
+          args: "--config=.github/.golangci.yml"
           skip-go-installation: true`
