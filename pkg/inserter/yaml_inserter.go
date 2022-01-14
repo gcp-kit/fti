@@ -8,16 +8,19 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// YAMLInserter - InserterのYAML実装
 type YAMLInserter struct {
 	ci *CommonInserter
 }
 
+// NewYAMLInserter - YAMLInserter constructor
 func NewYAMLInserter(ci *CommonInserter) *YAMLInserter {
 	return &YAMLInserter{
 		ci: ci,
 	}
 }
 
+// Execute - YAMLを読み込んでアイテムを生成する
 func (y *YAMLInserter) Execute(ctx context.Context, cn, path string) error {
 	yb, err := os.ReadFile(path)
 	if err != nil {
