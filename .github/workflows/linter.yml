@@ -11,9 +11,8 @@ jobs:
         with:
           go-version: 1.17
       - name: Install dependencies
-        working-directory: /tmp
         run: |
-          go get golang.org/x/tools/cmd/goimports
+          go install golang.org/x/tools/cmd/goimports@latest
       - name: Install JRE
         run: |
           sudo apt update && sudo apt install openjdk-17-jre
