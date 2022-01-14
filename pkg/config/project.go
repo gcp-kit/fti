@@ -1,7 +1,9 @@
+// Package config - ftiのコンフィグに関するパッケージ
 package config
 
 import "os"
 
+// GetProjectID - GCPのプロジェクトIDを返す
 func GetProjectID(cfg *Config) string {
 	if cfg.FirestoreProjectOnEmulator != "" {
 		_ = os.Setenv("FIRESTORE_EMULATOR_HOST", cfg.FirestoreEmulatorHost)

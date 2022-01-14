@@ -1,11 +1,14 @@
+// Package inserter - Firestore にダミーデータを追加するためのパッケージ
 package inserter
 
-type JsonModel struct {
+// JSONModel - JSONのモデル
+type JSONModel struct {
 	Version string          `json:"version"`
-	Items   []JsonModelItem `json:"items"`
+	Items   []JSONModelItem `json:"items"`
 }
 
-type JsonModelItem struct {
+// JSONModelItem - JsonModel のアイテム
+type JSONModelItem struct {
 	Ref     string                 `json:"ref"`
 	Payload map[string]interface{} `json:"payload"`
 }
