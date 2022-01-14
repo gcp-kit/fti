@@ -39,6 +39,5 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
         with:
-          args: "--config=.github/.golangci.yml"
+          args: "--config=.github/.golangci.yml --out-format line-number"
           skip-go-installation: true
-          args: "--out-format line-number"
