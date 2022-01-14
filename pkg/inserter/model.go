@@ -1,7 +1,7 @@
 package inserter
 
 type Model struct {
-	Version string          `json:"version" yaml:"version"`
+	Version string      `json:"version" yaml:"version"`
 	Items   []ModelItem `json:"items" yaml:"version"`
 }
 
