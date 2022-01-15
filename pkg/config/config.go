@@ -1,5 +1,7 @@
+// Package config - ftiのコンフィグに関するパッケージ
 package config
 
+// Config - ftiのコンフィグ
 type Config struct {
 	Targets                    []string `config:"targets,required" yaml:"targets"`
 	FirestoreProjectOnEmulator string   `config:"firestore_project_on_emulator" yaml:"firestore_project_on_emulator"`
