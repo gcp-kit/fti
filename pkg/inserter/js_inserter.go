@@ -69,7 +69,7 @@ func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 	return nil
 }
 
-func (j *JSInserter) CreateItem(ctx context.Context, path []string, items []JsonModelItem, collectionIndexes []int) error {
+func (j *JSInserter) CreateItem(ctx context.Context, path []string, items []JSONModelItem, collectionIndexes []int) error {
 	for idx, parentItem := range items {
 		nowIndexes := append(collectionIndexes, idx)
 		docPath := strings.Join(path, "/")
