@@ -1,3 +1,4 @@
+// Package inserter - Firestore にダミーデータを追加するためのパッケージ
 package inserter
 
 import (
@@ -10,23 +11,26 @@ import (
 	"golang.org/x/xerrors"
 )
 
+// JSONInserter - Inserter for .json
 type JSONInserter struct {
 	ci *CommonInserter
 }
 
+// NewJSONInserter - JSONInserter constructor
 func NewJSONInserter(ci *CommonInserter) *JSONInserter {
 	return &JSONInserter{
 		ci: ci,
 	}
 }
 
+// Execute - .json を読み込んで登録する
 func (j *JSONInserter) Execute(ctx context.Context, cn, path string) error {
 	jb, err := os.ReadFile(path)
 	if err != nil {
 		return xerrors.Errorf("failed to read json file: %+v", err)
 	}
 
-	jm := new(JsonModel)
+	jm := new(JSONModel)
 	err = json.Unmarshal(jb, jm)
 	if err != nil {
 		return xerrors.Errorf("failed to unmarshal json: %w", err)

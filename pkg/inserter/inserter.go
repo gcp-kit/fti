@@ -1,3 +1,4 @@
+// Package inserter - Firestore にダミーデータを追加するためのパッケージ
 package inserter
 
 import (
@@ -13,11 +14,13 @@ import (
 	"golang.org/x/xerrors"
 )
 
+// Inserter - Inserter
 type Inserter struct {
 	jsonInserter *JSONInserter
 	jsInserter   *JSInserter
 }
 
+// NewInserter - Inserter constructor
 func NewInserter(client *firestore.Client) *Inserter {
 	ci := NewCommonInserter(client)
 	return &Inserter{
@@ -26,6 +29,7 @@ func NewInserter(client *firestore.Client) *Inserter {
 	}
 }
 
+// Execute - ダミーデータソースの読み込みと実行処理呼び出しを行う
 func (i *Inserter) Execute(ctx context.Context, cfg *config.Config) error {
 	targetDir := cfg.Targets
 	for _, t := range targetDir {

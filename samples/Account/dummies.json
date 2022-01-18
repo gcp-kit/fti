@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "items": [
+    {
+      "ref": "dummy-1",
+      "payload": {
+        "name": "John Doe",
+        "age": 20
+      }
+    }
+  ]
+}
