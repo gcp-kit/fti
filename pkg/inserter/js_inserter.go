@@ -1,3 +1,4 @@
+// Package inserter - Firestore にダミーデータを追加するためのパッケージ
 package inserter
 
 import (
@@ -9,16 +10,19 @@ import (
 	v8 "rogchap.com/v8go"
 )
 
+// JSInserter - Inserter for .js
 type JSInserter struct {
 	ci *CommonInserter
 }
 
+// NewJSInserter - JSInserter constructor
 func NewJSInserter(ci *CommonInserter) *JSInserter {
 	return &JSInserter{
 		ci: ci,
 	}
 }
 
+// Execute - .js を読み込んで登録する
 func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 	b, err := os.ReadFile(path)
 	if err != nil {

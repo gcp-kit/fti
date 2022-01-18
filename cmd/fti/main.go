@@ -1,3 +1,4 @@
+// Package main - メインパッケージ
 package main
 
 import (

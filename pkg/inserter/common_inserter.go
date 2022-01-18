@@ -1,3 +1,4 @@
+// Package inserter - Firestore にダミーデータを追加するためのパッケージ
 package inserter
 
 import (
@@ -10,11 +11,13 @@ import (
 	"golang.org/x/xerrors"
 )
 
+// CommonInserter - Inserterの共通部分
 type CommonInserter struct {
 	client *firestore.Client
 	refIDs map[string]string
 }
 
+// NewCommonInserter - CommonInserter constructor
 func NewCommonInserter(client *firestore.Client) *CommonInserter {
 	return &CommonInserter{
 		client: client,
@@ -22,6 +25,7 @@ func NewCommonInserter(client *firestore.Client) *CommonInserter {
 	}
 }
 
+// CreateItem - item を Firestore に作る
 func (c *CommonInserter) CreateItem(ctx context.Context, cn, refID string, item map[string]interface{}) error {
 	item = c.tryParseDate(item)
 	item = c.setRefs(item)
@@ -42,7 +46,7 @@ func (c *CommonInserter) CreateItem(ctx context.Context, cn, refID string, item 
 	return nil
 }
 
-func (ci *CommonInserter) tryParseDate(item map[string]interface{}) map[string]interface{} {
+func (c *CommonInserter) tryParseDate(item map[string]interface{}) map[string]interface{} {
 	for k, v := range item {
 		switch vt := v.(type) {
 		case string:
@@ -54,20 +58,20 @@ func (ci *CommonInserter) tryParseDate(item map[string]interface{}) map[string]i
 			item[k] = pt
 
 		case map[string]interface{}:
-			item[k] = ci.tryParseDate(vt)
+			item[k] = c.tryParseDate(vt)
 		}
 	}
 
 	return item
 }
 
-func (ci *CommonInserter) setRefs(item map[string]interface{}) map[string]interface{} {
+func (c *CommonInserter) setRefs(item map[string]interface{}) map[string]interface{} {
 	for k, v := range item {
 		switch vt := v.(type) {
 		case string:
 			if strings.HasPrefix(vt, "$") {
 				refID := strings.TrimPrefix(vt, "$")
-				rv, ok := ci.refIDs[refID]
+				rv, ok := c.refIDs[refID]
 				if !ok {
 					log.Printf("%s was not found", refID)
 					continue

@@ -1,0 +1,4 @@
+targets:
+  - ./samples/Account
+firestore_project_on_emulator: sample
+firestore_emulator_host: localhost:41848
