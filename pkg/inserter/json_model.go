@@ -9,6 +9,7 @@ type JSONModel struct {
 
 // JSONModelItem - JsonModel のアイテム
 type JSONModelItem struct {
-	Ref     string                 `json:"ref"`
-	Payload map[string]interface{} `json:"payload"`
+	Ref            string                     `json:"ref"`
+	Payload        map[string]interface{}     `json:"payload"`
+	SubCollections map[string][]JSONModelItem `json:"sub_collections"`
 }

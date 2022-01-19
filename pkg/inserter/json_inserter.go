@@ -5,6 +5,8 @@ import (
 	"context"
 	"encoding/json"
 	"os"
+	"strconv"
+	"strings"
 
 	"golang.org/x/xerrors"
 )
@@ -34,10 +36,35 @@ func (j *JSONInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to unmarshal json: %w", err)
 	}
 
-	for idx, item := range jm.Items {
-		err := j.ci.CreateItem(ctx, cn, item.Ref, item.Payload)
+	docPath := make([]string, 0)
+	err = j.CreateItem(ctx, append(docPath, cn), jm.Items, make([]int, 0))
+	if err != nil {
+		return xerrors.Errorf("failed to create item: %w", err)
+	}
+
+	return nil
+}
+
+func (j *JSONInserter) CreateItem(ctx context.Context, path []string, items []JSONModelItem, collectionIndexes []int) error {
+	for idx, parentItem := range items {
+		nowIndexes := append(collectionIndexes, idx)
+		docPath := strings.Join(path, "/")
+		err := j.ci.CreateItem(ctx, docPath, parentItem.Ref, parentItem.Payload)
 		if err != nil {
-			return xerrors.Errorf("failed to create item in array (index=%d): %w", idx, err)
+			errorIndexes := make([]string, 0)
+			for _, v := range nowIndexes {
+				errorIndexes = append(errorIndexes, strconv.Itoa(v))
+			}
+			return xerrors.Errorf("failed to create item in array (index=%s): %w", strings.Join(errorIndexes, "/"), err)
+		}
+		if parentItem.SubCollections == nil || len(parentItem.SubCollections) == 0 {
+			continue
+		}
+		for collectionName, subItems := range parentItem.SubCollections {
+			err := j.CreateItem(ctx, append(path, j.ci.refIDs[parentItem.Ref], collectionName), subItems, nowIndexes)
+			if err != nil {
+				return xerrors.Errorf("failed to create item in array: %w", err)
+			}
 		}
 	}
 
