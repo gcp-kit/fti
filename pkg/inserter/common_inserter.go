@@ -70,27 +70,29 @@ func (c *CommonInserter) setRefs(item map[string]interface{}) map[string]interfa
 		switch vt := v.(type) {
 		case map[string]interface{}:
 			for vtk, vtv := range vt {
-				if strings.HasPrefix(vtk, "$") {
-					refID := strings.TrimPrefix(vtk, "$")
-					rk, ok := c.refIDs[refID]
-					if !ok {
-						log.Printf("%s was not found", refID)
-						continue
-					}
-					vt[rk] = vtv
-					delete(vt, vtk)
+				if !strings.HasPrefix(vtk, "$") {
+					continue
 				}
-			}
-		case string:
-			if strings.HasPrefix(vt, "$") {
-				refID := strings.TrimPrefix(vt, "$")
-				rv, ok := c.refIDs[refID]
+				refID := strings.TrimPrefix(vtk, "$")
+				rk, ok := c.refIDs[refID]
 				if !ok {
 					log.Printf("%s was not found", refID)
 					continue
 				}
-				item[k] = rv
+				vt[rk] = vtv
+				delete(vt, vtk)
 			}
+		case string:
+			if !strings.HasPrefix(vt, "$") {
+				continue
+			}
+			refID := strings.TrimPrefix(vt, "$")
+			rv, ok := c.refIDs[refID]
+			if !ok {
+				log.Printf("%s was not found", refID)
+				continue
+			}
+			item[k] = rv
 		}
 	}
 
