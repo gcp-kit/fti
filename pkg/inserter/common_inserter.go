@@ -65,7 +65,6 @@ func (c *CommonInserter) tryParseDate(item map[string]interface{}) map[string]in
 	return item
 }
 
-// nolint:dupl
 func (c *CommonInserter) setRefs(item map[string]interface{}) map[string]interface{} {
 	for k, v := range item {
 		switch vt := v.(type) {
