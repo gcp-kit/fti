@@ -54,7 +54,7 @@ func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to marshal json of returned value: %w", err)
 	}
 
-	jms := make([]ModelItem, 0)
+	jms := make([]Document, 0)
 	err = json.Unmarshal(jb, &jms)
 	if err != nil {
 		return xerrors.Errorf("failed to unmarshal json: %w", err)
@@ -71,7 +71,7 @@ func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 
 //nolint:dupl
 // CreateItem - Firestore にアイテムを生成する
-func (j *JSInserter) CreateItem(ctx context.Context, path []string, items []ModelItem, collectionIndexes []int) error {
+func (j *JSInserter) CreateItem(ctx context.Context, path []string, items []Document, collectionIndexes []int) error {
 	for idx, parentItem := range items {
 		nowIndexes := append(collectionIndexes, idx)
 		docPath := strings.Join(path, "/")
@@ -87,7 +87,7 @@ func (j *JSInserter) CreateItem(ctx context.Context, path []string, items []Mode
 			continue
 		}
 		for collectionName, subItems := range parentItem.SubCollections {
-			err := j.CreateItem(ctx, append(path, j.ci.refIDs[parentItem.Ref], collectionName), subItems, nowIndexes)
+			err := j.CreateItem(ctx, append(path, j.ci.refIDs[parentItem.Ref], string(collectionName)), subItems, nowIndexes)
 			if err != nil {
 				return xerrors.Errorf("failed to create item in array: %w", err)
 			}

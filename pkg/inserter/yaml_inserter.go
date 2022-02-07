@@ -27,7 +27,7 @@ func (y *YAMLInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to read yaml file: %+v", err)
 	}
 
-	ym := new(Model)
+	ym := new(Collection)
 	err = yaml.Unmarshal(yb, ym)
 	if err != nil {
 		return xerrors.Errorf("failed to unmarshal yaml: %w", err)

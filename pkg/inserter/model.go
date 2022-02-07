@@ -1,14 +1,16 @@
 package inserter
 
-// Model - JSONやYAMLのモデル
-type Model struct {
+type CollectionName string
+
+// Collection - JSONやYAMLのモデル
+type Collection struct {
 	Version string      `json:"version" yaml:"version"`
-	Items   []ModelItem `json:"items" yaml:"version"`
+	Items   []Document `json:"items" yaml:"version"`
 }
 
-// ModelItem - Modelが持つアイテム
-type ModelItem struct {
+// Document - Modelが持つアイテム
+type Document struct {
 	Ref            string                 `json:"ref" yaml:"ref"`
 	Payload        map[string]interface{} `json:"payload" yaml:"payload"`
-	SubCollections map[string][]ModelItem `json:"sub_collections"`
+	SubCollections map[CollectionName][]Document `json:"sub_collections"`
 }
