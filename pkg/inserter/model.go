@@ -8,6 +8,7 @@ type Model struct {
 
 // ModelItem - Modelが持つアイテム
 type ModelItem struct {
-	Ref     string                 `json:"ref" yaml:"ref"`
-	Payload map[string]interface{} `json:"payload" yaml:"payload"`
+	Ref            string                 `json:"ref" yaml:"ref"`
+	Payload        map[string]interface{} `json:"payload" yaml:"payload"`
+	SubCollections map[string][]ModelItem `json:"sub_collections"`
 }
