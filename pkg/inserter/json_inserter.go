@@ -45,7 +45,6 @@ func (j *JSONInserter) Execute(ctx context.Context, cn, path string) error {
 	return nil
 }
 
-// nolint: dupl
 // CreateItem - ItemのCreate
 func (j *JSONInserter) CreateItem(ctx context.Context, path []string, items []JSONModelItem, collectionIndexes []int) error {
 	for idx, parentItem := range items {
