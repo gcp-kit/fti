@@ -45,6 +45,7 @@ func (j *JSONInserter) Execute(ctx context.Context, cn, path string) error {
 	return nil
 }
 
+//nolint:dupl
 func (j *JSONInserter) CreateItem(ctx context.Context, path []string, items []ModelItem, collectionIndexes []int) error {
 	for idx, parentItem := range items {
 		nowIndexes := append(collectionIndexes, idx)
