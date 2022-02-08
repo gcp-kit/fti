@@ -1,0 +1,17 @@
+{
+  "versions": "1.0",
+  "items": [
+    {
+      "ref": "Option__dummy_0",
+      "payload": {
+        "name": "選択肢0"
+      }
+    },
+    {
+      "ref": "Option__dummy_1",
+      "payload": {
+        "name": "選択肢1"
+      }
+    }
+  ]
+}
