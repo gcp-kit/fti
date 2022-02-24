@@ -30,7 +30,7 @@ func (j *JSONInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to read json file: %+v", err)
 	}
 
-	jm := new(JSONModel)
+	jm := new(Collection)
 	err = json.Unmarshal(jb, jm)
 	if err != nil {
 		return xerrors.Errorf("failed to unmarshal json: %w", err)
@@ -45,9 +45,9 @@ func (j *JSONInserter) Execute(ctx context.Context, cn, path string) error {
 	return nil
 }
 
-// CreateItem - ItemのCreate
+// CreateItem - Firestore にアイテムを生成する
 // nolint: dupl
-func (j *JSONInserter) CreateItem(ctx context.Context, path []string, items []JSONModelItem, collectionIndexes []int) error {
+func (j *JSONInserter) CreateItem(ctx context.Context, path []string, items []Document, collectionIndexes []int) error {
 	for idx, parentItem := range items {
 		nowIndexes := append(collectionIndexes, idx)
 		docPath := strings.Join(path, "/")
@@ -63,7 +63,7 @@ func (j *JSONInserter) CreateItem(ctx context.Context, path []string, items []JS
 			continue
 		}
 		for collectionName, subItems := range parentItem.SubCollections {
-			err := j.CreateItem(ctx, append(path, j.ci.refIDs[parentItem.Ref], collectionName), subItems, nowIndexes)
+			err := j.CreateItem(ctx, append(path, j.ci.refIDs[parentItem.Ref], string(collectionName)), subItems, nowIndexes)
 			if err != nil {
 				return xerrors.Errorf("failed to create item in array: %w", err)
 			}

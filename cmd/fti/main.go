@@ -15,12 +15,12 @@ import (
 	"github.com/gcp-kit/fti/pkg/config"
 	"github.com/gcp-kit/fti/pkg/files"
 	"github.com/gcp-kit/fti/pkg/inserter"
+	_ "github.com/goccy/go-yaml"
 	"github.com/heetch/confita"
 	"github.com/heetch/confita/backend/env"
 	"github.com/heetch/confita/backend/file"
 	"github.com/heetch/confita/backend/flags"
 	"golang.org/x/xerrors"
-	_ "gopkg.in/yaml.v2"
 )
 
 var (

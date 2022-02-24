@@ -1,0 +1,6 @@
+version: '1.0'
+items:
+  - ref: dummy-1
+    payload:
+      name: Orange
+      origin: Japan

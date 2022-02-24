@@ -1,5 +1,6 @@
 targets:
   - ./samples/Account
+  - ./samples/Food
   - ./samples/Option
   - ./samples/Survey
 firestore_project_on_emulator: sample
