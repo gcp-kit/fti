@@ -26,11 +26,16 @@ func NewCommonInserter(client *firestore.Client) *CommonInserter {
 }
 
 // CreateItem - item を Firestore に作る
-func (c *CommonInserter) CreateItem(ctx context.Context, cn, refID string, item map[string]interface{}) error {
+func (c *CommonInserter) CreateItem(ctx context.Context, cn, ID, refID string, item map[string]interface{}) error {
 	item = c.tryParseDate(item)
 	item = c.setRefs(item)
 
-	d := c.client.Collection(cn).NewDoc()
+	var d *firestore.DocumentRef
+	if ID == "" {
+		d = c.client.Collection(cn).NewDoc()
+	} else {
+		d = c.client.Collection(cn).Doc(ID)
+	}
 	_, err := d.Create(ctx, item)
 	if err != nil {
 		return xerrors.Errorf("failed to create item: %w", err)

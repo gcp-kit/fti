@@ -51,7 +51,7 @@ func (j *JSONInserter) CreateItem(ctx context.Context, path []string, items []Do
 	for idx, parentItem := range items {
 		nowIndexes := append(collectionIndexes, idx)
 		docPath := strings.Join(path, "/")
-		err := j.ci.CreateItem(ctx, docPath, parentItem.Ref, parentItem.Payload)
+		err := j.ci.CreateItem(ctx, docPath, parentItem.ID, parentItem.Ref, parentItem.Payload)
 		if err != nil {
 			errorIndexes := make([]string, 0)
 			for _, v := range nowIndexes {
