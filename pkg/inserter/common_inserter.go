@@ -72,7 +72,7 @@ func (c *CommonInserter) replaceMultiRefs(src string, reg *regexp.Regexp) string
 		return ""
 	}
 	for _, m := range ms {
-		refID := strings.TrimSuffix(strings.TrimPrefix(m, "${"), "}")
+		refID := strings.TrimSuffix(strings.TrimPrefix(m, "#{"), "}")
 		rv, ok := c.refIDs[refID]
 		if !ok {
 			log.Printf("%s was not found", refID)
@@ -84,7 +84,7 @@ func (c *CommonInserter) replaceMultiRefs(src string, reg *regexp.Regexp) string
 }
 
 func (c *CommonInserter) setRefs(item map[string]interface{}) map[string]interface{} {
-	reg := regexp.MustCompile(`\$\{.*?\}`)
+	reg := regexp.MustCompile(`\#\{.*?\}`)
 	for k, v := range item {
 		switch vt := v.(type) {
 		case map[string]interface{}:
