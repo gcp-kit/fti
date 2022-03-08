@@ -67,7 +67,7 @@ func (c *CommonInserter) tryParseDate(item map[string]interface{}) map[string]in
 }
 
 func (c *CommonInserter) replaceMultiRefs(src string, reg *regexp.Regexp) string {
-	ms := reg.FindAllString(src, 10)
+	ms := reg.FindAllString(src, -1)
 	if len(ms) == 0 {
 		return ""
 	}
