@@ -34,7 +34,7 @@ func (y *YAMLInserter) Execute(ctx context.Context, cn, path string) error {
 	}
 
 	for idx, item := range ym.Items {
-		err := y.ci.CreateItem(ctx, cn, item.Ref, item.Payload)
+		err := y.ci.CreateItem(ctx, cn, item.ID, item.Ref, item.Payload)
 		if err != nil {
 			return xerrors.Errorf("failed to create item in array (index=%d): %w", idx, err)
 		}

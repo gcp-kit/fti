@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "items": [
+    {
+      "id": "car-id-1",
+      "ref": "dummy-car-1",
+      "payload": {
+        "name": "Car1"
+      }
+    }
+  ]
+}

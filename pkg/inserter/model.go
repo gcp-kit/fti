@@ -11,6 +11,7 @@ type Collection struct {
 
 // Document - Modelが持つアイテム
 type Document struct {
+	ID             string                        `json:"id" yaml:"id"`
 	Ref            string                        `json:"ref" yaml:"ref"`
 	Payload        map[string]interface{}        `json:"payload" yaml:"payload"`
 	SubCollections map[CollectionName][]Document `json:"sub_collections"`
