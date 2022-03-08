@@ -72,7 +72,7 @@ func (c *CommonInserter) replaceMultiRefs(src string, reg *regexp.Regexp) string
 		return ""
 	}
 	for _, m := range ms {
-		refID := strings.TrimSuffix(strings.TrimPrefix(m, "#{"), "}")
+		refID := m[2 : len(m)-1]
 		rv, ok := c.refIDs[refID]
 		if !ok {
 			log.Printf("%s was not found", refID)
