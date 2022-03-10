@@ -2,7 +2,7 @@
 
 ## 使い方
 
-1. ビルド `go build ./cmd/fti/...`
+1. ビルド `go build ./cmd/fti/*.go`
 2. config.yml を作成
 3. 実行 `./main -c "config.yml""`
 
