@@ -30,6 +30,7 @@ func NewCommonInserter(client *firestore.Client) *CommonInserter {
 func (c *CommonInserter) CreateItem(ctx context.Context, cn, ID, refID string, item map[string]interface{}) error {
 	item = c.tryParseDate(item)
 	item = c.setRefs(item)
+	log.Print(item)
 
 	var d *firestore.DocumentRef
 	if ID == "" {
@@ -92,11 +93,15 @@ func (c *CommonInserter) setRefs(item map[string]interface{}) map[string]interfa
 	reg := regexp.MustCompile(`\#\{.*?\}`)
 	for k, v := range item {
 		switch vt := v.(type) {
-		case []string:
+		case []interface{}:
 			new := make([]string, len(vt))
 			for i, vtv := range vt {
-				if strings.HasPrefix(vtv, "$") && !reg.MatchString(vtv) {
-					refID := strings.TrimPrefix(vtv, "$")
+				vStr, ok := vtv.(string)
+				if !ok {
+					break
+				}
+				if strings.HasPrefix(vStr, "$") && !reg.MatchString(vStr) {
+					refID := strings.TrimPrefix(vStr, "$")
 					rv, ok := c.refIDs[refID]
 					if !ok {
 						log.Printf("%s was not found", refID)
@@ -104,7 +109,7 @@ func (c *CommonInserter) setRefs(item map[string]interface{}) map[string]interfa
 						new[i] = rv
 					}
 				}
-				n := c.replaceMultiRefs(vtv, reg)
+				n := c.replaceMultiRefs(vStr, reg)
 				if n != "" {
 					new[i] = n
 				}
