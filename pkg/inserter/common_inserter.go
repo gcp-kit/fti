@@ -30,7 +30,6 @@ func NewCommonInserter(client *firestore.Client) *CommonInserter {
 func (c *CommonInserter) CreateItem(ctx context.Context, cn, ID, refID string, item map[string]interface{}) error {
 	item = c.tryParseDate(item)
 	item = c.setRefs(item)
-	log.Print(item)
 
 	var d *firestore.DocumentRef
 	if ID == "" {
@@ -95,9 +94,11 @@ func (c *CommonInserter) setRefs(item map[string]interface{}) map[string]interfa
 		switch vt := v.(type) {
 		case []interface{}:
 			new := make([]string, len(vt))
+			isStr := true
 			for i, vtv := range vt {
 				vStr, ok := vtv.(string)
 				if !ok {
+					isStr = false
 					break
 				}
 				if strings.HasPrefix(vStr, "$") && !reg.MatchString(vStr) {
@@ -114,7 +115,9 @@ func (c *CommonInserter) setRefs(item map[string]interface{}) map[string]interfa
 					new[i] = n
 				}
 			}
-			item[k] = new
+			if isStr {
+				item[k] = new
+			}
 		case map[string]interface{}:
 			for vtk, vtv := range vt {
 				if strings.HasPrefix(vtk, "$") && !reg.MatchString(vtk) {
