@@ -30,7 +30,6 @@ func NewCommonInserter(client *firestore.Client) *CommonInserter {
 func (c *CommonInserter) CreateItem(ctx context.Context, cn, ID, refID string, item map[string]interface{}) error {
 	item = c.tryParseDate(item)
 	item = c.setRefs(item)
-	log.Print(item)
 
 	var d *firestore.DocumentRef
 	if ID == "" {
