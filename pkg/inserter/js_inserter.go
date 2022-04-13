@@ -31,10 +31,7 @@ func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to js read from file: %w", err)
 	}
 
-	v8ctx, err := v8.NewContext()
-	if err != nil {
-		return xerrors.Errorf("failed to create v8 context: %w", err)
-	}
+	v8ctx := v8.NewContext()
 
 	val, err := v8ctx.RunScript(string(b), path)
 	if err != nil {
