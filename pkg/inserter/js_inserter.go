@@ -84,7 +84,7 @@ func (j *JSInserter) CreateItem(ctx context.Context, path []string, items []Docu
 			continue
 		}
 		for collectionName, subItems := range parentItem.SubCollections {
-			err := j.CreateItem(ctx, append(path, j.ci.refIDs[parentItem.Ref], string(collectionName)), subItems, nowIndexes)
+			err = j.CreateItem(ctx, append(path, j.ci.refIDs[parentItem.Ref], string(collectionName)), subItems, nowIndexes)
 			if err != nil {
 				return xerrors.Errorf("failed to create item in array: %w", err)
 			}
