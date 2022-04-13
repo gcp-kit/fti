@@ -1,7 +1,7 @@
 {
-    "emulators": {
-      "firestore": {
-        "port": "41848"
-      }
+  "emulators": {
+    "firestore": {
+      "port": "41848"
     }
   }
+}

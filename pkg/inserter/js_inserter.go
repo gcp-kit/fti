@@ -31,10 +31,7 @@ func (j *JSInserter) Execute(ctx context.Context, cn, path string) error {
 		return xerrors.Errorf("failed to js read from file: %w", err)
 	}
 
-	v8ctx, err := v8.NewContext()
-	if err != nil {
-		return xerrors.Errorf("failed to create v8 context: %w", err)
-	}
+	v8ctx := v8.NewContext()
 
 	val, err := v8ctx.RunScript(string(b), path)
 	if err != nil {
@@ -87,7 +84,7 @@ func (j *JSInserter) CreateItem(ctx context.Context, path []string, items []Docu
 			continue
 		}
 		for collectionName, subItems := range parentItem.SubCollections {
-			err := j.CreateItem(ctx, append(path, j.ci.refIDs[parentItem.Ref], string(collectionName)), subItems, nowIndexes)
+			err = j.CreateItem(ctx, append(path, j.ci.refIDs[parentItem.Ref], string(collectionName)), subItems, nowIndexes)
 			if err != nil {
 				return xerrors.Errorf("failed to create item in array: %w", err)
 			}
