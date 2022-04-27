@@ -14,13 +14,19 @@
 
 ### firestore_project_on_emulator
 
-謎
+
 
 ### firestore_emulator_host
 
 firestore emulator のホスト
 
 ex) `localhost:20048`
+
+空の場合は、
+gcloud auth application-default login
+とかしてローカルに認証情報が入っていて、かつ
+gcloud config set ProjectID
+してる時に該当のプロジェクトに対して接続される感じ
 
 ## テストデータの作り方
 
