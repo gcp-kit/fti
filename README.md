@@ -48,7 +48,7 @@ gcloud config set ProjectID
 #### ref
 参照されるときのID。対象のすべてのデータを通してユニークである必要がある。
 データ投入時に自動採番されたIDがこのrefで参照できる。  
-refを参照する場合は `$ref_id` のように参照する。
+refを参照する場合は `#{ref_id}` のように参照する。
 
 ### 形式
 
@@ -56,41 +56,63 @@ refを参照する場合は `$ref_id` のように参照する。
 
 ```json
 {
-  "version": "1.0",
-  "items": [
-    {
-      "ref": "参照されるときのID(重複禁止)",
-      "payload": {
-        "name": "hoge"
-      },
-      "SubCollections": {
-        "Collection1": [
-          {
-            "key": "value1"
-          },
-          {
-            "key": "value2"
-          }]
+   "version": "1.0",
+   "items": [
+      {
+         "ref": "参照されるときのID(重複禁止)",
+         "payload": {
+            "name": "hoge"
+         },
+         "sub_collections": {
+            "SampleCollection1": [
+               {
+                  "ref": "参照されるときのID(重複禁止)",
+                  "payload": {
+                     "parentID": "#{parentID-1}",
+                     "key": "value1"
+                  }
+               },
+               {
+                  "ref": "参照されるときのID(重複禁止)",
+                  "payload": {
+                     "key": "value1"
+                  }
+               }
+            ]
+         }
       }
-    }
-  ]
+   ]
 }
 ```
+
+### yaml
+
+jsonと同じ形式のyamlを投入する
 
 #### js
 
 最終的に、下記の形式(サンプル)の配列で認識されるものであれば何をしても良い。
-内部的にはv8エンジンを搭載しているため、かなり自由なjsが使えると思うが、どこまでの構文に対応しているかは不明。
 
 ```js
 [
    {
       ref: `参照されるときのID(重複禁止)`,
       payload: {
-         parent_id: '$parent_id__1',
+         parent_id: '#{parent_id__1}',
          created_at: new Date(), 
          deleted_at: null,
          // 実際に投入されるデータ
+      },
+      sub_collections: {
+          SampleCollections1: [
+             {
+                ref: '参照されるときのID(重複禁止)',
+                payload: {
+                    parentID: '#{parentID-1}',
+                    key: 'value1'
+                }
+             }
+          ]
       }
    }
 ]
@@ -100,7 +122,7 @@ refを参照する場合は `$ref_id` のように参照する。
 
 ### 日時を入れたい？
 
-#### json
+#### json / yaml
 
 RFC3339(ISO8601)の形式で文字列として入れる
 
