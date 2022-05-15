@@ -8,5 +8,15 @@
         "age": 20
       }
     }
-  ]
+  ],
+  "sub_collections": {
+    "AccountHistories": [
+      {
+        "ref": "sub-collection-sample-1",
+        "payload": {
+          "name": "John Titor"
+        }
+      }
+    ]
+  }
 }
