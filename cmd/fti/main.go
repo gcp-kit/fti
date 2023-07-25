@@ -28,6 +28,10 @@ var (
 	versionFlag = flag.Bool("v", false, "show version")
 )
 
+const (
+	refIDsFileName = "ref_ids.yaml"
+)
+
 func main() {
 	flag.Parse()
 
@@ -60,10 +64,35 @@ func main() {
 		log.Fatalf("failed to init firestore: %+v", err)
 	}
 
-	is := inserter.NewInserter(client)
-	err = is.Execute(context.Background(), &cfg)
+	// refIDの一覧
+	refIDs := inserter.RefIDs{}
+	refFilePath := func() string {
+		if cfg.StateDir != "" {
+			return filepath.Join(cfg.StateDir, refIDsFileName)
+		}
+		return ""
+	}()
+
+	// stateDirが指定されている場合は、そこからrefIDを読み込む
+	if cfg.StateDir != "" {
+		err := refIDs.LoadFromFile(refFilePath)
+		if err != nil {
+			log.Fatalf("failed to load state file: %+v", err)
+		}
+	}
+
+	is := inserter.NewInserter(client, refIDs)
+	refIDs, err = is.Execute(context.Background(), &cfg)
 	if err != nil {
 		log.Fatalf("failed to execute insert: %+v", err)
+	}
+
+	// stateDirが指定されている場合は、そこにrefIDを書き込む
+	if cfg.StateDir != "" {
+		err := refIDs.SaveToFile(refFilePath)
+		if err != nil {
+			log.Fatalf("failed to save state file: %+v", err)
+		}
 	}
 }
 

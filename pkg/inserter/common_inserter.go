@@ -15,15 +15,24 @@ import (
 // CommonInserter - Inserterの共通部分
 type CommonInserter struct {
 	client *firestore.Client
-	refIDs map[string]string
+	refIDs RefIDs
 }
 
 // NewCommonInserter - CommonInserter constructor
-func NewCommonInserter(client *firestore.Client) *CommonInserter {
+func NewCommonInserter(client *firestore.Client, refIDs RefIDs) *CommonInserter {
+	if refIDs == nil {
+		refIDs = RefIDs{}
+	}
+
 	return &CommonInserter{
 		client: client,
-		refIDs: map[string]string{},
+		refIDs: refIDs,
 	}
+}
+
+// RefIDs - ref id の一覧を返す
+func (c *CommonInserter) RefIDs() map[string]string {
+	return c.refIDs
 }
 
 // CreateItem - item を Firestore に作る

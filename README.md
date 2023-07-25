@@ -28,6 +28,18 @@ gcloud auth application-default login
 gcloud config set ProjectID
 してる時に該当のプロジェクトに対して接続される感じ
 
+### state_dir
+
+投入したデータのステータスを保存するディレクトリ。  
+空を指定した場合は、ステータスを保存しない。
+
+作成されるファイル
+
+```text
+state_dir/
+└── ref_ids.yaml   # ref_idのリスト
+```
+
 ## テストデータの作り方
 
 1. FirestoreのCollection名と同じディレクトリを作成する
