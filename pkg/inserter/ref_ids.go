@@ -7,6 +7,7 @@ import (
 	"golang.org/x/xerrors"
 )
 
+// RefIDs - ref id の一覧
 type RefIDs map[string]string
 
 // LoadFromFile - yamlファイルからrefIDを読み込む
