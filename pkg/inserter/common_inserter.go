@@ -102,7 +102,7 @@ func (c *CommonInserter) setRefs(item map[string]interface{}) map[string]interfa
 	for k, v := range item {
 		switch vt := v.(type) {
 		case []interface{}:
-			new := make([]string, len(vt))
+			ni := make([]string, len(vt))
 			isStr := true
 			for i, vtv := range vt {
 				vStr, ok := vtv.(string)
@@ -116,19 +116,19 @@ func (c *CommonInserter) setRefs(item map[string]interface{}) map[string]interfa
 					if !ok {
 						log.Printf("%s was not found", refID)
 					} else {
-						new[i] = rv
+						ni[i] = rv
 					}
 					continue
 				}
 				n := c.replaceMultiRefs(vStr, reg)
 				if n != "" {
-					new[i] = n
+					ni[i] = n
 					continue
 				}
-				new[i] = vStr
+				ni[i] = vStr
 			}
 			if isStr {
-				item[k] = new
+				item[k] = ni
 			}
 		case map[string]interface{}:
 			for vtk, vtv := range vt {
